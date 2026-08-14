@@ -12,28 +12,51 @@
             height: 100vh;
             overflow: hidden;
             background-color: #000;
+            font-family: sans-serif;
         }
 
         .map-viewport {
             position: relative;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Clips the bottom ad that hangs outside this box */
+            overflow: hidden;
         }
 
         .map-viewport iframe {
             width: 100%;
-            /* Make the iframe slightly taller so the bottom ad is pushed past 100% height */
-            height: calc(100% + 80px); 
+            /* Extra height keeps bottom ads cropped out */
+            height: calc(100% + 90px); 
             border: none;
             position: absolute;
             top: 0;
             left: 0;
-
-            /* Your desired 1.05 zoom level */
             transform: scale(1.05);
-            /* Scale from the top so it doesn't pull the bottom ad back up into view */
             transform-origin: top center; 
+            transition: transform 0.1s ease-out; /* Smooth zoom animation */
+        }
+
+        /* Floating Zoom Control Panel */
+        .zoom-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            user-select: none;
+        }
+
+        .zoom-controls input[type="range"] {
+            cursor: pointer;
+            accent-color: #00bfff;
         }
     </style>
 </head>
@@ -41,10 +64,32 @@
 
     <div class="map-viewport">
         <iframe 
+            id="map-frame"
             src="https://palia.th.gl/maps/Royal%20Highlands" 
             allow="geolocation; microphone; camera">
         </iframe>
     </div>
+
+    <!-- Floating Zoom Slider Overlay -->
+    <div class="zoom-controls">
+        <label for="zoomSlider">Zoom:</label>
+        <!-- Min 1.0 (Normal), Max 2.0 (Double), Step 0.05 for smooth scrolling -->
+        <input type="range" id="zoomSlider" min="1.0" max="2.0" step="0.05" value="1.05">
+        <span id="zoomVal">1.05x</span>
+    </div>
+
+    <script>
+        const slider = document.getElementById('zoomSlider');
+        const frame = document.getElementById('map-frame');
+        const valDisplay = document.getElementById('zoomVal');
+
+        slider.addEventListener('input', (e) => {
+            const zoomLevel = e.target.value;
+            // Dynamically scale the map iframe
+            frame.style.transform = `scale(${zoomLevel})`;
+            valDisplay.textContent = `${parseFloat(zoomLevel).toFixed(2)}x`;
+        });
+    </script>
 
 </body>
 </html>
