@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Palia Map - XENEON EDGE</title>
     <style>
+        /* Fill the entire screen cleanly without scrollbars */
         html, body {
             margin: 0;
             padding: 0;
@@ -12,67 +13,20 @@
             height: 100vh;
             overflow: hidden;
             background-color: #000;
-            font-family: sans-serif;
         }
 
+        /* Container setup */
         .map-viewport {
-            position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
         }
 
+        /* Direct 1:1 frame that lets Stylus manage interior zoom */
         .map-viewport iframe {
             width: 100%;
-            height: calc(100% + 90px); 
+            height: 100%;
             border: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: scale(1.05);
-            transform-origin: top center; 
-            transition: transform 0.1s ease-out;
-        }
-
-        /* Floating Controls Panel (Zoom + Peer Link) */
-        .controls-panel {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(6px);
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 12px;
-            user-select: none;
-        }
-
-        .controls-panel input[type="range"] {
-            cursor: pointer;
-            accent-color: #00bfff;
-        }
-
-        .controls-panel input[type="text"] {
-            background: #111;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 4px;
-            width: 80px;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        .divider {
-            width: 1px;
-            height: 16px;
-            background: rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
@@ -80,60 +34,10 @@
 
     <div class="map-viewport">
         <iframe 
-            id="map-frame"
             src="https://palia.th.gl/maps/Royal%20Highlands" 
             allow="geolocation; microphone; camera">
         </iframe>
     </div>
-
-    <!-- Floating Control Panel Overlay -->
-    <div class="controls-panel">
-        <!-- Peer Code Auto-Save Field -->
-        <label for="peerInput">Peer:</label>
-        <input type="text" id="peerInput" placeholder="ql8wb8gg" maxlength="10">
-
-        <div class="divider"></div>
-
-        <!-- Zoom Slider -->
-        <label for="zoomSlider">Zoom:</label>
-        <input type="range" id="zoomSlider" min="1.0" max="2.0" step="0.05" value="1.05">
-        <span id="zoomVal">1.05x</span>
-    </div>
-
-    <script>
-        const slider = document.getElementById('zoomSlider');
-        const frame = document.getElementById('map-frame');
-        const valDisplay = document.getElementById('zoomVal');
-        const peerInput = document.getElementById('peerInput');
-
-        const baseUrl = "https://palia.th.gl/maps/Royal%20Highlands";
-
-        // 1. Auto-load saved Peer Code on start
-        const savedPeer = localStorage.getItem('palia_peer_code');
-        if (savedPeer) {
-            peerInput.value = savedPeer;
-            frame.src = `${baseUrl}?peer=${savedPeer}`;
-        }
-
-        // 2. Save Peer Code as you type & update the map URL
-        peerInput.addEventListener('change', (e) => {
-            const code = e.target.value.trim();
-            if (code) {
-                localStorage.setItem('palia_peer_code', code);
-                frame.src = `${baseUrl}?peer=${code}`;
-            } else {
-                localStorage.removeItem('palia_peer_code');
-                frame.src = baseUrl;
-            }
-        });
-
-        // 3. Zoom Slider Control
-        slider.addEventListener('input', (e) => {
-            const zoomLevel = e.target.value;
-            frame.style.transform = `scale(${zoomLevel})`;
-            valDisplay.textContent = `${parseFloat(zoomLevel).toFixed(2)}x`;
-        });
-    </script>
 
 </body>
 </html>
