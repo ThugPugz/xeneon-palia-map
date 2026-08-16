@@ -3,42 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Palia Map - XENEON EDGE</title>
+
     <style>
-        html, body {
+        /* =========================================
+           FULLSCREEN PAGE
+           ========================================= */
+
+        html,
+        body {
             margin: 0;
             padding: 0;
+
             width: 100vw;
             height: 100vh;
+
             overflow: hidden;
-            background-color: #000;
+
+            background: #000;
         }
 
-        .map-viewport {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Clips anything extending past screen height */
+
+        /* =========================================
+           MAP WRAPPER
+
+           Anything outside this area is completely
+           clipped and cannot be displayed.
+           ========================================= */
+
+        .map-wrapper {
             position: relative;
+
+            width: 100vw;
+            height: 100vh;
+
+            overflow: hidden;
+
+            background: #000;
         }
 
-        .map-viewport iframe {
-            width: 100%;
-            /* Extends iframe past the bottom to push ads off-screen */
-            height: calc(100% + 90px); 
-            border: none;
+
+        /* =========================================
+           PALIA MAP
+
+           The iframe is made slightly taller than
+           the screen so the bottom portion can be
+           pushed outside the visible wrapper.
+
+           Change 150px if the ad area is larger/
+           smaller.
+           ========================================= */
+
+        .map-wrapper iframe {
             position: absolute;
+
             top: 0;
             left: 0;
+
+            width: 100%;
+            height: calc(100% + 150px);
+
+            border: none;
+
+            display: block;
         }
     </style>
 </head>
+
 <body>
 
-    <div class="map-viewport">
-        <iframe 
-            src="https://palia.th.gl/maps/Royal%20Highlands" 
-            allow="geolocation; microphone; camera">
+    <div class="map-wrapper">
+
+        <iframe
+            src="https://palia.th.gl/maps/Royal%20Highlands"
+            allow="geolocation; microphone; camera; fullscreen"
+            loading="eager">
         </iframe>
+
     </div>
 
 </body>
