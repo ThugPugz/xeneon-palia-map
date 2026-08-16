@@ -8,7 +8,7 @@
 
     <style>
         /* =========================================
-           FULL SCREEN
+           FULLSCREEN PAGE
            ========================================= */
 
         html,
@@ -26,12 +26,13 @@
 
 
         /* =========================================
-           MAP VIEWPORT
+           MAP WRAPPER
 
-           Anything outside this area is clipped.
+           Anything outside this area is completely
+           clipped and cannot be displayed.
            ========================================= */
 
-        .map-viewport {
+        .map-wrapper {
             position: relative;
 
             width: 100vw;
@@ -44,26 +45,24 @@
 
 
         /* =========================================
-           MAP IFRAME
+           PALIA MAP
 
-           1.3x visual zoom
+           The iframe is made slightly taller than
+           the screen so the bottom portion can be
+           pushed outside the visible wrapper.
+
+           Change 150px if the ad area is larger/
+           smaller.
            ========================================= */
 
-        .map-viewport iframe {
+        .map-wrapper iframe {
             position: absolute;
 
-            /*
-             * Move the enlarged map back toward
-             * the center of the screen.
-             */
-            left: -15%;
-            top: -15%;
+            top: 0;
+            left: 0;
 
-            /*
-             * 130% = approximately 1.3x zoom
-             */
-            width: 130%;
-            height: 130%;
+            width: 100%;
+            height: calc(100% + 150px);
 
             border: none;
 
@@ -74,11 +73,12 @@
 
 <body>
 
-    <div class="map-viewport">
+    <div class="map-wrapper">
 
         <iframe
             src="https://palia.th.gl/maps/Royal%20Highlands"
-            allow="geolocation; microphone; camera; fullscreen">
+            allow="geolocation; microphone; camera; fullscreen"
+            loading="eager">
         </iframe>
 
     </div>
