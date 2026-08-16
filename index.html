@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Palia Map - XENEON EDGE</title>
     <style>
-        /* Fill the entire screen cleanly without scrollbars */
+        /* Fill the screen without scrollbars or margins */
         html, body {
             margin: 0;
             padding: 0;
@@ -15,14 +15,14 @@
             background-color: #000;
         }
 
-        /* Container setup */
+        /* 1:1 Viewport Container */
         .map-viewport {
             width: 100%;
             height: 100%;
             overflow: hidden;
         }
 
-        /* Direct 1:1 frame that lets Stylus manage interior zoom */
+        /* Pure full-width frame - Stylus controls internal map zoom */
         .map-viewport iframe {
             width: 100%;
             height: 100%;
