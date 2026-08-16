@@ -24,13 +24,14 @@
 
         .map-viewport iframe {
             width: 100%;
-            height: calc(100% + 90px); 
+            height: 100%; 
             border: none;
             position: absolute;
             top: 0;
             left: 0;
-            transform: scale(1.05);
-            transform-origin: top center; 
+            transform: scale(1.15);
+            /* Zoom pings directly off the center of the screen */
+            transform-origin: center center; 
             transition: transform 0.1s ease-out;
         }
 
@@ -40,7 +41,7 @@
             bottom: 20px;
             right: 20px;
             z-index: 9999;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(6px);
             padding: 10px 14px;
             border-radius: 8px;
@@ -96,8 +97,8 @@
 
         <!-- Zoom Slider -->
         <label for="zoomSlider">Zoom:</label>
-        <input type="range" id="zoomSlider" min="1.0" max="2.0" step="0.05" value="1.05">
-        <span id="zoomVal">1.05x</span>
+        <input type="range" id="zoomSlider" min="1.0" max="2.5" step="0.05" value="1.15">
+        <span id="zoomVal">1.15x</span>
     </div>
 
     <script>
@@ -108,14 +109,14 @@
 
         const baseUrl = "https://palia.th.gl/maps/Royal%20Highlands";
 
-        // 1. Auto-load saved Peer Code on start
+        // 1. Auto-load saved Peer Code on startup
         const savedPeer = localStorage.getItem('palia_peer_code');
         if (savedPeer) {
             peerInput.value = savedPeer;
             frame.src = `${baseUrl}?peer=${savedPeer}`;
         }
 
-        // 2. Save Peer Code as you type & update the map URL
+        // 2. Save Peer Code and refresh stream on entry
         peerInput.addEventListener('change', (e) => {
             const code = e.target.value.trim();
             if (code) {
@@ -127,7 +128,7 @@
             }
         });
 
-        // 3. Zoom Slider Control
+        // 3. Centered Zoom Control
         slider.addEventListener('input', (e) => {
             const zoomLevel = e.target.value;
             frame.style.transform = `scale(${zoomLevel})`;
